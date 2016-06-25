@@ -1,3 +1,13 @@
+import { graphql } from 'graphql';
+import Schema from './schema';
+
 exports.graphqlGET = function graphqlGET (req, res) {
-  res.send('Hello World!');
+
+  let query = req.query;
+
+  graphql(Schema, query).then( function(result) {
+      console.log('result: ', result);
+      res.send(result);
+  });  
+  
 };
