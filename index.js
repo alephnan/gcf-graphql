@@ -1,13 +1,9 @@
-import { graphql } from 'graphql';
-import Schema from './schema';
+import Schema from './data/index';
+import { graphql }  from 'graphql';
 
-exports.graphqlGET = function graphqlGET (req, res) {
-
-  let query = req.query;
-
-  graphql(Schema, query).then( function(result) {
-      console.log('result: ', result);
-      res.send(result);
-  });  
-  
-};
+exports.graphqlGET = function graphqlGET (options, context) {
+  (async () => {
+    var result = await (graphql(Schema, options.query));
+    context.succeed(result);
+  })();
+}
