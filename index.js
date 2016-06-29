@@ -1,4 +1,6 @@
-import Schema from './data/index';
+'use strict';
+
+import Schema from './back/api/lib/graphql/';
 import { graphql }  from 'graphql';
 
 exports.graphqlGET = function graphqlGET (req, res) {
