@@ -1,7 +1,7 @@
 'use strict';
 
 import Schema from './back/api/lib/graphql/';
-import { graphQL }  from 'graphql';
+//import { graphQL }  from 'graphql';
 
 function handleGET(req, res) {
    res.writeHead(200, {'Content-Type': 'text/plain'});
@@ -10,8 +10,8 @@ function handleGET(req, res) {
 
 function handlePUT(req, res) {
   res.writeHead();
-  let result = await (graphQL(Schema, req.query));
-  res.send(result);
+  //let result = await (graphQL(Schema, req.query));
+  //res.send(result);
 }
 
 export function helloGQL (req, res) {

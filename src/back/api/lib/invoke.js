@@ -19,6 +19,6 @@ module.exports = (name, data, responseHandler) => {
 
   return Promise
     .fromCallback(cb => gcf.invoke(params, cb))
-    .then(reply -> reply.Payload ? JSON.parse(reply.Payload) : {})
+    .then(reply => reply.Payload ? JSON.parse(reply.Payload) : {})
     .then(responseHandler); 
 };
