@@ -1,33 +1,40 @@
 'use strict';
 
-import Schema from './back/api/lib/graphql/';
-//import { graphQL }  from 'graphql';
-
-function handleGET(req, res) {
-   res.writeHead(200, {'Content-Type': 'text/plain'});
-   res.send('Hello World');
+function get(req, res) {
+    var fileSystem = require('fs');
+    var readStream = fileSystem.createReadStream('./src/graphiql.html');
+    readStream.pipe(res);
 }
 
-function handlePUT(req, res) {
-  res.writeHead();
-  //let result = await (graphQL(Schema, req.query));
-  //res.send(result);
+function post(req, res) {
+   var esGraphQL = require('elasticsearch-graphql')
+   var graphql = require('graphql')
+   var hitsSchema = require('./schema')
+   var graphqlHTTP = require('express-graphql')
+
+   var testSchema = esGraphQL({graphql: graphql, name: 'yourSchemaName', elastic: {host: 'localhost:9200',
+                                                                        index: 'index',
+                                                                        type: 'type'
+                                                                      },
+                                                                      hitsSchema: hitsSchema
+                                                                    })
+
+   var result = graphqlHTTP({ schema: new graphql.GraphQLSchema({
+     query: new graphql.GraphQLObjectType({
+     name: 'RootQueryType',
+     fields: { ordersSearch: testSchema }})}),
+     graphiql: true })
+
+   res.send(result);
 }
 
 export function helloGQL (req, res) {
   switch(req.method) {
     case 'GET':
-      handleGET(req, res)
+      get(req, res)
       break;
-    case 'PUT':
-      handlePUT(req, res)
+    case 'POST':
+      post(req, res)
       break;
   }
 }
-
-/*
-(async () => {
-    var result = await (graphql(Schema, req.query));
-    res.send(result);
-  })();
-*/
